@@ -1,0 +1,24 @@
+{
+  "project": "LookBook",
+  "version": "2.0.0",
+  "features": [
+    "overall looks",
+    "individual clothing items",
+    "body-area tags",
+    "item wear history",
+    "sandbox composer",
+    "saved look ideas",
+    "automatic item wear counting from saved look ideas"
+  ],
+  "files": [
+    ".github/workflows/android.yml",
+    ".gitignore",
+    "README.md",
+    "buildozer.spec",
+    "database.py",
+    "lookbook.kv",
+    "main.py",
+    "project_manifest.json",
+    "requirements.txt"
+  ]
+}

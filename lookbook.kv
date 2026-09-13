@@ -1,0 +1,324 @@
+#:import dp kivy.metrics.dp
+
+<LookCard>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: dp(330)
+    padding: dp(7)
+    spacing: dp(5)
+    canvas.before:
+        Color:
+            rgba: 0.13, 0.14, 0.17, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(12)]
+    Image:
+        source: root.image_path
+        allow_stretch: True
+        keep_ratio: True
+    Label:
+        text: root.look_name
+        size_hint_y: None
+        height: dp(30)
+        bold: True
+        font_size: "17sp"
+        shorten: True
+    Label:
+        text: root.detail_text
+        size_hint_y: None
+        height: dp(58)
+        font_size: "11sp"
+        halign: "left"
+        valign: "middle"
+        text_size: self.width, self.height
+    BoxLayout:
+        size_hint_y: None
+        height: dp(42)
+        spacing: dp(5)
+        Button:
+            text: "Wore this"
+            on_release: app.mark_look_worn(root.look_id)
+        Button:
+            text: "Edit"
+            size_hint_x: .55
+            on_release: app.open_edit_look(root.look_id)
+
+<ItemCard>:
+    orientation: "vertical"
+    size_hint_y: None
+    height: dp(330)
+    padding: dp(7)
+    spacing: dp(5)
+    canvas.before:
+        Color:
+            rgba: 0.13, 0.14, 0.17, 1
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(12)]
+    Image:
+        source: root.image_path
+        allow_stretch: True
+        keep_ratio: True
+    Label:
+        text: root.item_name
+        size_hint_y: None
+        height: dp(30)
+        bold: True
+        font_size: "17sp"
+        shorten: True
+    Label:
+        text: root.detail_text
+        size_hint_y: None
+        height: dp(52)
+        font_size: "11sp"
+        halign: "left"
+        valign: "middle"
+        text_size: self.width, self.height
+    BoxLayout:
+        size_hint_y: None
+        height: dp(42)
+        spacing: dp(5)
+        Button:
+            text: "Wore this"
+            on_release: app.mark_item_worn(root.item_id)
+        Button:
+            text: "Edit"
+            size_hint_x: .55
+            on_release: app.open_edit_item(root.item_id)
+
+<LooksScreen>:
+    name: "looks"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(7)
+        BoxLayout:
+            size_hint_y: None
+            height: dp(48)
+            spacing: dp(6)
+            TextInput:
+                id: look_search
+                hint_text: "Search overall looks..."
+                multiline: False
+                on_text: app.refresh_looks()
+            Spinner:
+                id: look_tag_spinner
+                text: "All tags"
+                values: app.look_tag_choices
+                size_hint_x: None
+                width: dp(145)
+                on_text: app.set_look_tag(self.text)
+            Button:
+                text: "+ Add look"
+                size_hint_x: None
+                width: dp(115)
+                on_release: app.open_add_look()
+        BoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(6)
+            Label:
+                text: "Sort:"
+                size_hint_x: None
+                width: dp(45)
+            Button:
+                text: "Name"
+                on_release: app.set_look_sort("name")
+            Button:
+                text: "Least recently worn"
+                on_release: app.set_look_sort("oldest")
+        ScrollView:
+            do_scroll_x: False
+            GridLayout:
+                id: look_grid
+                cols: 2
+                spacing: dp(8)
+                padding: dp(2)
+                size_hint_y: None
+                height: self.minimum_height
+
+<ItemsScreen>:
+    name: "items"
+    BoxLayout:
+        orientation: "vertical"
+        spacing: dp(7)
+        BoxLayout:
+            size_hint_y: None
+            height: dp(48)
+            spacing: dp(6)
+            TextInput:
+                id: item_search
+                hint_text: "Search clothing items..."
+                multiline: False
+                on_text: app.refresh_items()
+            Button:
+                text: "+ Add item"
+                size_hint_x: None
+                width: dp(110)
+                on_release: app.open_add_item()
+        BoxLayout:
+            size_hint_y: None
+            height: dp(48)
+            spacing: dp(6)
+            Spinner:
+                id: body_area_spinner
+                text: "All body areas"
+                values: app.body_area_choices
+                on_text: app.set_body_area(self.text)
+            Spinner:
+                id: item_tag_spinner
+                text: "All tags"
+                values: app.item_tag_choices
+                on_text: app.set_item_tag(self.text)
+        BoxLayout:
+            size_hint_y: None
+            height: dp(40)
+            spacing: dp(6)
+            Label:
+                text: "Sort:"
+                size_hint_x: None
+                width: dp(45)
+            Button:
+                text: "Name"
+                on_release: app.set_item_sort("name")
+            Button:
+                text: "Least recently worn"
+                on_release: app.set_item_sort("oldest")
+        ScrollView:
+            do_scroll_x: False
+            GridLayout:
+                id: item_grid
+                cols: 2
+                spacing: dp(8)
+                padding: dp(2)
+                size_hint_y: None
+                height: self.minimum_height
+
+<SandboxScreen>:
+    name: "sandbox"
+    BoxLayout:
+        orientation: "horizontal"
+        spacing: dp(8)
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x: .34
+            spacing: dp(6)
+            Label:
+                text: "Available items"
+                size_hint_y: None
+                height: dp(34)
+                bold: True
+            ScrollView:
+                do_scroll_x: False
+                GridLayout:
+                    id: sandbox_available
+                    cols: 1
+                    spacing: dp(4)
+                    size_hint_y: None
+                    height: self.minimum_height
+            Button:
+                text: "Clear sandbox"
+                size_hint_y: None
+                height: dp(44)
+                on_release: app.clear_sandbox()
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x: .66
+            spacing: dp(6)
+            Label:
+                text: "Sandbox — items are arranged by body position"
+                size_hint_y: None
+                height: dp(34)
+                bold: True
+            ScrollView:
+                do_scroll_x: False
+                BoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: self.minimum_height
+                    spacing: dp(7)
+                    GridLayout:
+                        id: sandbox_head
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                    GridLayout:
+                        id: sandbox_upper_body
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                    GridLayout:
+                        id: sandbox_legs
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+                    GridLayout:
+                        id: sandbox_feet
+                        cols: 1
+                        size_hint_y: None
+                        height: self.minimum_height
+            Button:
+                text: "Save as look idea"
+                size_hint_y: None
+                height: dp(48)
+                on_release: app.save_sandbox_idea()
+            Label:
+                text: "Saved look ideas"
+                size_hint_y: None
+                height: dp(32)
+                bold: True
+            ScrollView:
+                size_hint_y: .45
+                do_scroll_x: False
+                GridLayout:
+                    id: saved_ideas
+                    cols: 1
+                    spacing: dp(5)
+                    size_hint_y: None
+                    height: self.minimum_height
+
+<RootWidget>:
+    orientation: "vertical"
+    padding: dp(9)
+    spacing: dp(8)
+    canvas.before:
+        Color:
+            rgba: .055, .06, .075, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    BoxLayout:
+        size_hint_y: None
+        height: dp(55)
+        spacing: dp(6)
+        Label:
+            text: "LOOKBOOK"
+            bold: True
+            font_size: "24sp"
+            halign: "left"
+            valign: "middle"
+            text_size: self.size
+        Button:
+            text: "Looks"
+            size_hint_x: None
+            width: dp(95)
+            on_release: app.show_screen("looks")
+        Button:
+            text: "Items"
+            size_hint_x: None
+            width: dp(95)
+            on_release: app.show_screen("items")
+        Button:
+            text: "Sandbox"
+            size_hint_x: None
+            width: dp(105)
+            on_release: app.show_screen("sandbox")
+    ScreenManager:
+        id: manager
+        LooksScreen:
+            id: looks_screen
+        ItemsScreen:
+            id: items_screen
+        SandboxScreen:
+            id: sandbox_screen
