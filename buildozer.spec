@@ -11,7 +11,8 @@ version = 1.1.0
 
 # Android-specific packages are included so the phone's system image chooser
 # can safely turn content:// gallery URIs into app-private files.
-requirements = python3==3.12.9,hostpython3==3.12.9,kivy,pillow,plyer
+
+requirements = python3,kivy,pillow,plyer
 
 orientation = portrait
 fullscreen = 0
