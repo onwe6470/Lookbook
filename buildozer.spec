@@ -11,7 +11,7 @@ version = 1.1.0
 
 # Android-specific packages are included so the phone's system image chooser
 # can safely turn content:// gallery URIs into app-private files.
-requirements = python3,kivy==2.3.1,pillow,plyer,android,pyjnius,androidstorage4kivy
+requirements = python3==3.12.9,hostpython3==3.12.9,kivy,pillow,plyer
 
 orientation = portrait
 fullscreen = 0
@@ -19,7 +19,7 @@ fullscreen = 0
 # Current Buildozer/python-for-android target values (2026).
 android.api = 36
 android.minapi = 24
-android.ndk = 28c
+android.ndk = 29
 android.archs = arm64-v8a
 android.accept_sdk_license = True
 
