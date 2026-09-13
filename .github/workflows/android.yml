@@ -33,7 +33,6 @@ jobs:
             git \
             zip \
             unzip \
-            openjdk-17-jdk \
             autoconf \
             automake \
             autopoint \
@@ -47,13 +46,7 @@ jobs:
             cmake \
             libffi-dev \
             libssl-dev \
-            gettext \
-            libsdl2-dev \
-            libsdl2-image-dev \
-            libsdl2-mixer-dev \
-            libsdl2-ttf-dev \
-            libgl1-mesa-dev \
-            libgles2-mesa-dev
+            gettext
 
       - name: Install Rust
         run: |
@@ -66,13 +59,28 @@ jobs:
           python -m pip install "cython==0.29.34"
           python -m pip install buildozer
 
-      - name: Show versions
+      - name: Show build configuration
         run: |
+          echo "===== Python ====="
           python --version
+          echo "===== Pip ====="
           pip --version
+          echo "===== Buildozer ====="
           buildozer --version
+          echo "===== Java ====="
           java -version
+          echo "===== Rust ====="
           rustc --version
+          echo "===== Working directory ====="
+          pwd
+          echo "===== Repository contents ====="
+          ls -la
+          echo "===== Requirements ====="
+          grep "^requirements" buildozer.spec
+          echo "===== Android config ====="
+          grep -E "^android\.(api|minapi|ndk|archs)" buildozer.spec
+          echo "===== p4a branch ====="
+          grep "^p4a.branch" buildozer.spec
 
       - name: Build Android APK
         run: |
