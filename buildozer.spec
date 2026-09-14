@@ -9,32 +9,32 @@ source.include_exts = py,kv,png,jpg,jpeg,webp,atlas,txt,json
 
 version = 1.1.0
 
-# Android-specific packages are included so the phone's system image chooser
-# can safely turn content:// gallery URIs into app-private files.
-
-requirements = python3==3.12.9,hostpython3==3.12.9,kivy,plyer
+# Keep this simple for the older, stable python-for-android release.
+requirements = python3,kivy,plyer
 
 orientation = portrait
 fullscreen = 0
 
-# Current Buildozer/python-for-android target values (2026).
-android.api = 36
+# Conservative Android settings for p4a v2024.01.21
+android.api = 33
 android.minapi = 24
-android.ndk = 29
+android.ndk = 25b
 android.archs = arm64-v8a
+
 android.accept_sdk_license = True
 
-# The app only needs image access. The system chooser grants access to the
-# selected URI; these declarations also cover MediaStore access on recent
-# Android versions used by androidstorage4kivy.
+# Photo access
 android.permissions = READ_MEDIA_IMAGES,READ_EXTERNAL_STORAGE
 
 android.debug_artifact = apk
 android.release_artifact = apk
 
-# Stable branch is adequate for a sideloaded APK.
-p4a.branch = master
+# Pin python-for-android to the older stable release.
+# This release uses Python 3.11 by default.
+p4a.branch = v2024.01.21
+
 
 [buildozer]
+
 log_level = 2
 warn_on_root = 1
