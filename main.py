@@ -191,7 +191,7 @@ class LookBookApp(App):
                 image.save(destination, "JPEG", quality=88, optimize=True)
         else:
             destination = destination.with_suffix(source.suffix.lower())
-            shutil.copy2(source, destination)
+            shutil.copyfile(source, destination)
         return str(destination)
 
     def _same_file(self, a: str, b: str) -> bool:
