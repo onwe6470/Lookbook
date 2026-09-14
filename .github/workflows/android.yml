@@ -48,7 +48,19 @@ jobs:
 
       - name: Build APK
         run: |
-          buildozer -v android debug
+          for attempt in 1 2 3; do
+            echo "Build attempt $attempt"
+            if buildozer -v android debug; then
+              exit 0
+            fi
+      
+            if [ "$attempt" -lt 3 ]; then
+              echo "Build failed - retrying..."
+              sleep 15
+            fi
+          done
+      
+          exit 1
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
