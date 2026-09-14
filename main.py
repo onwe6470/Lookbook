@@ -1,7 +1,29 @@
 from __future__ import annotations
 
+
+
+
 import shutil
 from datetime import date
+
+
+import sys
+
+# ------------------------------------------------------------
+# Windows desktop compatibility
+# ------------------------------------------------------------
+# Kivy automatically enables the Windows pen/touch providers.
+# They can cause:
+# AttributeError: 'WM_PenProvider' object has no attribute 'hwnd'
+#
+# We don't need pen/multitouch input for LookBook, so disable them
+# when running the desktop version on Windows.
+if sys.platform == "win32":
+    from kivy.config import Config
+
+    Config.remove_option("input", "wm_pen")
+    Config.remove_option("input", "wm_touch")
+
 from pathlib import Path
 from uuid import uuid4
 
@@ -254,11 +276,22 @@ class LookBookApp(App):
         Clock.schedule_once(lambda *_: callback(str(private_path)), 0)
 
     def show_message(self, message: str):
-        content = BoxLayout(orientation="vertical", padding=dp(12), spacing=dp(10))
-        content.add_widget(Label(text=message))
+        content = BoxLayout(orientation="vertical", padding=dp(14), spacing=dp(10))
+        message_label = Label(
+            text=message,
+            halign="center",
+            valign="middle",
+            font_size="14sp",
+        )
+        # Constrain the text to the label width so long Android error messages
+        # wrap instead of running off the side of the phone.
+        message_label.bind(
+            size=lambda widget, value: setattr(widget, "text_size", value)
+        )
+        content.add_widget(message_label)
         close = Button(text="OK", size_hint_y=None, height=dp(48))
         content.add_widget(close)
-        popup = Popup(title="", content=content, size_hint=(0.84, 0.34), auto_dismiss=False)
+        popup = Popup(title="", content=content, size_hint=(0.90, 0.38), auto_dismiss=False)
         close.bind(on_release=lambda *_: popup.dismiss())
         popup.open()
 
@@ -577,16 +610,33 @@ class LookBookApp(App):
                     item_names.append(item.name)
             days = self.days_since(idea.last_worn)
             last = "Never" if days is None else ("Today" if days == 0 else f"{days} day(s) ago")
-            row = BoxLayout(size_hint_y=None, height=dp(78), spacing=dp(5))
-            label = Label(text=f"{idea.name}\n{', '.join(item_names)}\nWorn {idea.wear_count} • Last: {last}", halign="left", valign="middle", text_size=(None, None))
-            load = Button(text="Load", size_hint_x=None, width=dp(70))
+            card = BoxLayout(
+                orientation="vertical",
+                size_hint_y=None,
+                height=dp(126),
+                spacing=dp(5),
+                padding=dp(6),
+            )
+            label = Label(
+                text=f"{idea.name}\n{', '.join(item_names)}\nWorn {idea.wear_count} • Last: {last}",
+                halign="left",
+                valign="middle",
+                size_hint_y=None,
+                height=dp(72),
+                font_size="12sp",
+            )
+            label.bind(size=lambda widget, value: setattr(widget, "text_size", value))
+
+            actions = BoxLayout(size_hint_y=None, height=dp(44), spacing=dp(5))
+            load = Button(text="Load")
             load.bind(on_release=lambda _, idea_id=idea.id: self.load_idea_to_sandbox(idea_id))
-            wore = Button(text="Wore it", size_hint_x=None, width=dp(80))
+            wore = Button(text="Wore it")
             wore.bind(on_release=lambda _, idea_id=idea.id: self.mark_idea_worn(idea_id))
-            delete = Button(text="Delete", size_hint_x=None, width=dp(72))
+            delete = Button(text="Delete")
             delete.bind(on_release=lambda _, idea_id=idea.id: self.delete_idea(idea_id))
-            row.add_widget(label); row.add_widget(load); row.add_widget(wore); row.add_widget(delete)
-            ideas.add_widget(row)
+            actions.add_widget(load); actions.add_widget(wore); actions.add_widget(delete)
+            card.add_widget(label); card.add_widget(actions)
+            ideas.add_widget(card)
 
     @staticmethod
     def primary_area(item: Item) -> str:

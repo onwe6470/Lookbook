@@ -3,16 +3,16 @@
 <LookCard>:
     orientation: "vertical"
     size_hint_y: None
-    height: dp(330)
-    padding: dp(7)
-    spacing: dp(5)
+    height: dp(360)
+    padding: dp(8)
+    spacing: dp(6)
     canvas.before:
         Color:
             rgba: 0.13, 0.14, 0.17, 1
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [dp(12)]
+            radius: [dp(14)]
     Image:
         source: root.image_path
         allow_stretch: True
@@ -20,22 +20,23 @@
     Label:
         text: root.look_name
         size_hint_y: None
-        height: dp(30)
+        height: dp(32)
         bold: True
-        font_size: "17sp"
+        font_size: "18sp"
         shorten: True
+        shorten_from: "right"
     Label:
         text: root.detail_text
         size_hint_y: None
-        height: dp(58)
-        font_size: "11sp"
+        height: dp(64)
+        font_size: "12sp"
         halign: "left"
         valign: "middle"
         text_size: self.width, self.height
     BoxLayout:
         size_hint_y: None
-        height: dp(42)
-        spacing: dp(5)
+        height: dp(46)
+        spacing: dp(6)
         Button:
             text: "Wore this"
             on_release: app.mark_look_worn(root.look_id)
@@ -47,16 +48,16 @@
 <ItemCard>:
     orientation: "vertical"
     size_hint_y: None
-    height: dp(330)
-    padding: dp(7)
-    spacing: dp(5)
+    height: dp(360)
+    padding: dp(8)
+    spacing: dp(6)
     canvas.before:
         Color:
             rgba: 0.13, 0.14, 0.17, 1
         RoundedRectangle:
             pos: self.pos
             size: self.size
-            radius: [dp(12)]
+            radius: [dp(14)]
     Image:
         source: root.image_path
         allow_stretch: True
@@ -64,22 +65,23 @@
     Label:
         text: root.item_name
         size_hint_y: None
-        height: dp(30)
+        height: dp(32)
         bold: True
-        font_size: "17sp"
+        font_size: "18sp"
         shorten: True
+        shorten_from: "right"
     Label:
         text: root.detail_text
         size_hint_y: None
-        height: dp(52)
-        font_size: "11sp"
+        height: dp(60)
+        font_size: "12sp"
         halign: "left"
         valign: "middle"
         text_size: self.width, self.height
     BoxLayout:
         size_hint_y: None
-        height: dp(42)
-        spacing: dp(5)
+        height: dp(46)
+        spacing: dp(6)
         Button:
             text: "Wore this"
             on_release: app.mark_item_worn(root.item_id)
@@ -92,49 +94,49 @@
     name: "looks"
     BoxLayout:
         orientation: "vertical"
-        spacing: dp(7)
+        spacing: dp(6)
         BoxLayout:
             size_hint_y: None
             height: dp(48)
             spacing: dp(6)
             TextInput:
                 id: look_search
-                hint_text: "Search overall looks..."
+                hint_text: "Search looks..."
                 multiline: False
+                padding: dp(10), dp(12)
                 on_text: app.refresh_looks()
+            Button:
+                text: "+ Add"
+                size_hint_x: None
+                width: dp(92)
+                on_release: app.open_add_look()
+        BoxLayout:
+            size_hint_y: None
+            height: dp(44)
+            spacing: dp(6)
             Spinner:
                 id: look_tag_spinner
                 text: "All tags"
                 values: app.look_tag_choices
-                size_hint_x: None
-                width: dp(145)
                 on_text: app.set_look_tag(self.text)
             Button:
-                text: "+ Add look"
+                text: "A–Z"
                 size_hint_x: None
-                width: dp(115)
-                on_release: app.open_add_look()
-        BoxLayout:
-            size_hint_y: None
-            height: dp(40)
-            spacing: dp(6)
-            Label:
-                text: "Sort:"
-                size_hint_x: None
-                width: dp(45)
-            Button:
-                text: "Name"
+                width: dp(72)
                 on_release: app.set_look_sort("name")
             Button:
-                text: "Least recently worn"
+                text: "Oldest"
+                size_hint_x: None
+                width: dp(88)
                 on_release: app.set_look_sort("oldest")
         ScrollView:
             do_scroll_x: False
+            bar_width: dp(4)
             GridLayout:
                 id: look_grid
-                cols: 2
+                cols: 1 if self.width < dp(650) else 2
                 spacing: dp(8)
-                padding: dp(2)
+                padding: dp(2), dp(2), dp(2), dp(10)
                 size_hint_y: None
                 height: self.minimum_height
 
@@ -142,24 +144,25 @@
     name: "items"
     BoxLayout:
         orientation: "vertical"
-        spacing: dp(7)
+        spacing: dp(6)
         BoxLayout:
             size_hint_y: None
             height: dp(48)
             spacing: dp(6)
             TextInput:
                 id: item_search
-                hint_text: "Search clothing items..."
+                hint_text: "Search clothing..."
                 multiline: False
+                padding: dp(10), dp(12)
                 on_text: app.refresh_items()
             Button:
-                text: "+ Add item"
+                text: "+ Add"
                 size_hint_x: None
-                width: dp(110)
+                width: dp(92)
                 on_release: app.open_add_item()
         BoxLayout:
             size_hint_y: None
-            height: dp(48)
+            height: dp(44)
             spacing: dp(6)
             Spinner:
                 id: body_area_spinner
@@ -173,147 +176,131 @@
                 on_text: app.set_item_tag(self.text)
         BoxLayout:
             size_hint_y: None
-            height: dp(40)
+            height: dp(42)
             spacing: dp(6)
-            Label:
-                text: "Sort:"
-                size_hint_x: None
-                width: dp(45)
             Button:
-                text: "Name"
+                text: "Sort A–Z"
                 on_release: app.set_item_sort("name")
             Button:
                 text: "Least recently worn"
                 on_release: app.set_item_sort("oldest")
         ScrollView:
             do_scroll_x: False
+            bar_width: dp(4)
             GridLayout:
                 id: item_grid
-                cols: 2
+                cols: 1 if self.width < dp(650) else 2
                 spacing: dp(8)
-                padding: dp(2)
+                padding: dp(2), dp(2), dp(2), dp(10)
                 size_hint_y: None
                 height: self.minimum_height
 
 <SandboxScreen>:
     name: "sandbox"
-    BoxLayout:
-        orientation: "horizontal"
-        spacing: dp(8)
+    ScrollView:
+        do_scroll_x: False
+        bar_width: dp(4)
         BoxLayout:
             orientation: "vertical"
-            size_hint_x: .34
-            spacing: dp(6)
+            size_hint_y: None
+            height: self.minimum_height
+            spacing: dp(8)
+            padding: 0, 0, 0, dp(12)
+
             Label:
-                text: "Available items"
+                text: "BUILD A LOOK"
                 size_hint_y: None
-                height: dp(34)
+                height: dp(30)
                 bold: True
-            ScrollView:
-                do_scroll_x: False
-                GridLayout:
-                    id: sandbox_available
-                    cols: 1
-                    spacing: dp(4)
-                    size_hint_y: None
-                    height: self.minimum_height
-            Button:
-                text: "Clear sandbox"
-                size_hint_y: None
-                height: dp(44)
-                on_release: app.clear_sandbox()
-        BoxLayout:
-            orientation: "vertical"
-            size_hint_x: .66
-            spacing: dp(6)
+                font_size: "17sp"
+
             Label:
-                text: "Sandbox — items are arranged by body position"
+                text: "Tap an item to add or remove it"
                 size_hint_y: None
-                height: dp(34)
-                bold: True
-            ScrollView:
-                do_scroll_x: False
-                BoxLayout:
-                    orientation: "vertical"
-                    size_hint_y: None
-                    height: self.minimum_height
-                    spacing: dp(7)
-                    GridLayout:
-                        id: sandbox_head
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
-                    GridLayout:
-                        id: sandbox_upper_body
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
-                    GridLayout:
-                        id: sandbox_legs
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
-                    GridLayout:
-                        id: sandbox_feet
-                        cols: 1
-                        size_hint_y: None
-                        height: self.minimum_height
-            Button:
-                text: "Save as look idea"
+                height: dp(26)
+                font_size: "12sp"
+
+            GridLayout:
+                id: sandbox_available
+                cols: 1
+                spacing: dp(5)
                 size_hint_y: None
-                height: dp(48)
-                on_release: app.save_sandbox_idea()
+                height: self.minimum_height
+
+            BoxLayout:
+                size_hint_y: None
+                height: dp(46)
+                spacing: dp(6)
+                Button:
+                    text: "Clear"
+                    on_release: app.clear_sandbox()
+                Button:
+                    text: "Save as look idea"
+                    on_release: app.save_sandbox_idea()
+
             Label:
-                text: "Saved look ideas"
+                text: "CURRENT LOOK"
                 size_hint_y: None
                 height: dp(32)
                 bold: True
-            ScrollView:
-                size_hint_y: .45
-                do_scroll_x: False
-                GridLayout:
-                    id: saved_ideas
-                    cols: 1
-                    spacing: dp(5)
-                    size_hint_y: None
-                    height: self.minimum_height
+                font_size: "16sp"
+
+            GridLayout:
+                id: sandbox_head
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+            GridLayout:
+                id: sandbox_upper_body
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+            GridLayout:
+                id: sandbox_legs
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+            GridLayout:
+                id: sandbox_feet
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+
+            Label:
+                text: "SAVED LOOK IDEAS"
+                size_hint_y: None
+                height: dp(34)
+                bold: True
+                font_size: "16sp"
+
+            GridLayout:
+                id: saved_ideas
+                cols: 1
+                spacing: dp(6)
+                size_hint_y: None
+                height: self.minimum_height
 
 <RootWidget>:
     orientation: "vertical"
-    padding: dp(9)
-    spacing: dp(8)
+    padding: dp(7)
+    spacing: dp(6)
     canvas.before:
         Color:
             rgba: .055, .06, .075, 1
         Rectangle:
             pos: self.pos
             size: self.size
-    BoxLayout:
+
+    Label:
+        text: "LOOKBOOK"
         size_hint_y: None
-        height: dp(55)
-        spacing: dp(6)
-        Label:
-            text: "LOOKBOOK"
-            bold: True
-            font_size: "24sp"
-            halign: "left"
-            valign: "middle"
-            text_size: self.size
-        Button:
-            text: "Looks"
-            size_hint_x: None
-            width: dp(95)
-            on_release: app.show_screen("looks")
-        Button:
-            text: "Items"
-            size_hint_x: None
-            width: dp(95)
-            on_release: app.show_screen("items")
-        Button:
-            text: "Sandbox"
-            size_hint_x: None
-            width: dp(105)
-            on_release: app.show_screen("sandbox")
+        height: dp(42)
+        bold: True
+        font_size: "22sp"
+        halign: "center"
+        valign: "middle"
+        text_size: self.size
+
     ScreenManager:
         id: manager
         LooksScreen:
@@ -322,3 +309,17 @@
             id: items_screen
         SandboxScreen:
             id: sandbox_screen
+
+    BoxLayout:
+        size_hint_y: None
+        height: dp(52)
+        spacing: dp(6)
+        Button:
+            text: "Looks"
+            on_release: app.show_screen("looks")
+        Button:
+            text: "Items"
+            on_release: app.show_screen("items")
+        Button:
+            text: "Sandbox"
+            on_release: app.show_screen("sandbox")
