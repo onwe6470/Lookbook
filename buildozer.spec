@@ -10,7 +10,7 @@ source.include_exts = py,kv,png,jpg,jpeg,webp,atlas,txt,json
 version = 1.1.0
 
 # Keep this simple for the older, stable python-for-android release.
-requirements = python3,kivy,plyer
+requirements = python3,kivy,pillow,plyer
 
 orientation = portrait
 fullscreen = 0
